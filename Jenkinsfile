@@ -10,7 +10,7 @@ pipeline {
                                 bat 'mvn clean install'
                  }
             }
-        }
+        
         stage('Publish') {
             steps {
                 bat 'docker login --username AWS --password %ECR_TOKEN% public.ecr.aws/l9o2c9u6'
