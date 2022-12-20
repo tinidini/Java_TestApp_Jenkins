@@ -1,13 +1,15 @@
+def remote = [:]
+remote.name = "WebServer"
+remote.host = "3.72.11.182"
+remote.allowAnyHosts = true
+
 pipeline {
-    
-    remote.name = "WebServer"
-    remote.host = "3.72.11.182"
-    remote.allowAnyHosts = true
-    
     agent any
+    
     environment {
         ECR_TOKEN = credentials('ecr-token')
     }
+    
     stages {
         stage('Build') {
             steps {
@@ -32,15 +34,16 @@ pipeline {
             }
         }
         
-        stage('Deploy') 
-        {
-            withCredentials([sshUserPrivateKey(credentialsId: 'webserver-pk', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'ubuntu')]) 
+        node {
+            steps {
+            withCredentials([sshUserPrivateKey(credentialsId: 'webserver-pk', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) 
             {
-                remote.user = ubuntu
+                remote.user = userName
                 remote.identityFile = identity
-                steps {
+                stage('Deploy') {
                     sshCommand remote: remote, command: 'docker run --name helloworld public.ecr.aws/l9o2c9u6/helloworld:1.0'
                 }
+            }
             }
         }
     }
