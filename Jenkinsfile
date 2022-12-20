@@ -33,13 +33,15 @@ pipeline {
                 bat 'docker run -t helloworld:1.0'
             }
         }
-        
-        withCredentials([sshUserPrivateKey(credentialsId: 'webserver-pk', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
-            remote.user = userName
-            remote.identityFile = identity
-            stage('Deploy'){
-                sshCommand remote: remote, command: 'docker run --name helloworld public.ecr.aws/l9o2c9u6/helloworld:1.0'
-            }
-        }
     }  
+}
+
+node {
+    withCredentials([sshUserPrivateKey(credentialsId: 'webserver-pk', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
+        remote.user = userName
+        remote.identityFile = identity
+        stage('Deploy'){
+            sshCommand remote: remote, command: 'docker run --name helloworld public.ecr.aws/l9o2c9u6/helloworld:1.0'
+     }
+ }
 }
