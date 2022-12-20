@@ -10,6 +10,18 @@ pipeline {
         ECR_TOKEN = credentials('ecr-token')
     }
     
+    node {
+            steps {
+            withCredentials([sshUserPrivateKey(credentialsId: 'webserver-pk', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) {
+                remote.user = userName
+                remote.identityFile = identity
+                stage('Deploy') {
+                    sshCommand remote: remote, command: 'docker run --name helloworld public.ecr.aws/l9o2c9u6/helloworld:1.0'
+                }
+            }
+            }
+        }
+    
     stages {
         stage('Build') {
             steps {
@@ -34,17 +46,7 @@ pipeline {
             }
         }
         
-        node {
-            steps {
-            withCredentials([sshUserPrivateKey(credentialsId: 'webserver-pk', keyFileVariable: 'identity', passphraseVariable: '', usernameVariable: 'userName')]) 
-            {
-                remote.user = userName
-                remote.identityFile = identity
-                stage('Deploy') {
-                    sshCommand remote: remote, command: 'docker run --name helloworld public.ecr.aws/l9o2c9u6/helloworld:1.0'
-                }
-            }
-            }
-        }
     }
+    
+
 }
