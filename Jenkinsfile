@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    environment {
+        ECR_TOKEN = credentials('ecr-token')
+    }
     stages {
         stage('Build') {
             steps {
@@ -8,8 +10,10 @@ pipeline {
                                 bat 'mvn clean install'
                  }
             }
+        stage('Publish'){
+            steps {
+            }
         }
-
         stage('Run') {
             steps {
                 bat 'docker images'
