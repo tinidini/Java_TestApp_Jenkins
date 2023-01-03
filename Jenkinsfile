@@ -1,6 +1,6 @@
 def remote = [:]
 remote.name = "WebServer"
-remote.host = "3.72.11.182"
+remote.host = "52.29.123.31"
 remote.allowAnyHosts = true
 
 pipeline {
