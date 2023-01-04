@@ -1,8 +1,3 @@
-def remote = [:]
-remote.name = "WebServer"
-remote.host = "3.75.207.119"
-remote.allowAnyHosts = true
-
 pipeline {
     agent any
     
