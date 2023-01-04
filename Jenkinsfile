@@ -1,6 +1,6 @@
 def remote = [:]
 remote.name = "WebServer"
-remote.host = "172.31.44.48"
+remote.host = "3.75.207.119"
 remote.allowAnyHosts = true
 
 pipeline {
@@ -33,14 +33,6 @@ pipeline {
                 bat 'docker run -t helloworld:1.0'
             }
         }
-//         stage('Deploy') {
-//             steps {
-//                 sshagent(credentials: ['webserver-pk']) {
-//                     bat 'ssh ubuntu@52.29.123.31 -o StrictHostKeyChecking=no docker run --name helloworld public.ecr.aws/l9o2c9u6/helloworld:1.0'
-//                   }
-//              }
-//         }
-        
         
         stage("Deploy") {
             steps {
